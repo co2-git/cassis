@@ -72,7 +72,7 @@ var Rule = (function () {
     _classCallCheck(this, Rule);
 
     this.selector = selector;
-    this.declarations = declarations;
+    this.declarations = new Declaration(declarations);
   }
 
   _createClass(Rule, [{
@@ -80,9 +80,7 @@ var Rule = (function () {
     value: function render() {
       var source = this.selector + ' {\n';
 
-      for (var declaration in this.declarations) {
-        source += '    ' + declaration + ': ' + this.declarations[declaration] + ';\n';
-      }
+      source += this.declarations.render();
 
       source += '}';
 
@@ -93,7 +91,35 @@ var Rule = (function () {
   return Rule;
 })();
 
+var Declaration = (function () {
+  function Declaration(declarations) {
+    _classCallCheck(this, Declaration);
+
+    this.declarations = declarations;
+  }
+
+  _createClass(Declaration, [{
+    key: 'render',
+    value: function render() {
+      var source = '';
+
+      for (var declaration in this.declarations) {
+        if (typeof this.declarations[declaration] === 'string' || typeof this.declarations[declaration] === 'number') {
+          source += '    ' + declaration + ': ' + this.declarations[declaration] + ';\n';
+        } else if (this.declarations[declaration] instanceof Declaration) {
+          source += this.declarations[declaration].render();
+        }
+      }
+
+      return source;
+    }
+  }]);
+
+  return Declaration;
+})();
+
 Cassis.style = _style2['default'];
+Cassis.Declaration = Declaration;
 
 exports['default'] = Cassis;
 module.exports = exports['default'];
@@ -275,7 +301,7 @@ module.exports = exports['default'];
 },{"../../package.json":5,"./cassis":2,"_process":7,"events":6}],5:[function(require,module,exports){
 module.exports={
   "name": "cascade",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "",
   "main": "dist/lib/cassis.js",
   "scripts": {

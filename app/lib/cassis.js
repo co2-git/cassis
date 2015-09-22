@@ -31,17 +31,14 @@ class Cassis {
 class Rule {
   constructor (selector, declarations = {}) {
     this.selector = selector;
-    this.declarations = declarations;
+    this.declarations = new Declaration(declarations);
   }
 
   render () {
     let source = this.selector + ` {
 `;
 
-    for ( let declaration in this.declarations ) {
-      source += `    ${declaration}: ${this.declarations[declaration]};
-`
-    }
+    source += this.declarations.render();
 
     source += `}`;
 
@@ -49,6 +46,29 @@ class Rule {
   }
 }
 
+class Declaration {
+  constructor (declarations) {
+    this.declarations = declarations;
+  }
+
+  render () {
+    let source = '';
+
+    for ( let declaration in this.declarations ) {
+      if ( typeof this.declarations[declaration] === 'string' || typeof this.declarations[declaration] === 'number' ) {
+        source += `    ${declaration}: ${this.declarations[declaration]};
+`;
+      }
+      else if ( this.declarations[declaration] instanceof Declaration ) {
+        source += this.declarations[declaration].render();
+      }
+    }
+
+    return source;
+  }
+}
+
 Cassis.style = style;
+Cassis.Declaration = Declaration;
 
 export default Cassis;
