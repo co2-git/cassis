@@ -1,0 +1,23 @@
+{
+  "name": "cascade",
+  "version": "0.0.1",
+  "description": "",
+  "main": "dist/lib/cassis.js",
+  "scripts": {
+    "test": "node dist/test",
+    "build": "rm -rf dist && node_modules/.bin/babel app --modules common --stage 0 --optional runtime --out-dir dist;",
+    "watch": "rm -rf dist && node_modules/.bin/babel app --watch --modules common --stage 0 --out-dir dist",
+    "postinstall": "npm run build"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "babel": "^5.8.21",
+    "babel-runtime": "^5.8.5",
+    "css": "^2.2.1"
+  },
+  "devDependencies": {
+    "colors": "^1.1.2",
+    "should": "^6.0.3"
+  }
+}

@@ -1,0 +1,25 @@
+<!DOCTYPE html5>
+
+<meta charset="utf-8" />
+
+<title>Cassis | Style</title>
+
+<h1>h1</h1>
+
+<h1 class="foo">h1.foo</h1>
+
+<button>Reset</button>
+
+<script src="./dist/bundle.js"></script>
+
+<script>
+  setTimeout(function () {
+    Cassis.style.add(new Cassis({ h1 : { color : 'red' } }));
+    Cassis.style.add(new Cassis({ 'h1.foo' : { color : 'blue' } }));
+    Cassis.style.add(new Cassis({ h1 : { color : 'red' } }));
+
+    document.querySelector('button').addEventListener('click', function () {
+      Cassis.style.reset();
+    }, false);
+  });
+</script>
