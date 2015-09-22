@@ -1,7 +1,6 @@
 'use strict';
 
 import { EventEmitter } from 'events';
-import Reset from './reset';
 import Cassis from './cassis';
 import $package from '../../package.json';
 
@@ -11,16 +10,12 @@ class Styles extends EventEmitter {
 
     this.rules = {};
 
-    this.element = window.document.createElement('style');
-    window.document.body.appendChild(this.element);
+    if ( typeof window !== 'undefined' ) {
+      this.element = window.document.createElement('style');
+      window.document.body.appendChild(this.element);
+    }
 
     this.on('changed', () => this.write());
-  }
-
-  reset () {
-    process.nextTick(() => {
-      this.add(new Reset());
-    });
   }
 
   appendClass (cls) {
@@ -50,6 +45,11 @@ class Styles extends EventEmitter {
   }
 
   write () {
+
+    if ( typeof window === 'undefined' ) {
+      throw new Error('Must be in browser');
+    }
+
     let source = '';
 
     for ( let rule in this.rules ) {

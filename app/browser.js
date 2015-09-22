@@ -1,7 +1,7 @@
 'use strict';
 
 import Cassis from './lib/cassis';
-import style from './lib/style';
+import Reset from './lib/reset';
 
 window.Cassis = Cassis;
-window.Cassis.style = style;
+window.Reset = Reset;

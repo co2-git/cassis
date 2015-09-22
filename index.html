@@ -10,7 +10,7 @@
 
 <button>Reset</button>
 
-<script src="./dist/bundle.js"></script>
+<script src="./bundle.js"></script>
 
 <script>
   setTimeout(function () {
@@ -19,7 +19,7 @@
     Cassis.style.add(new Cassis({ h1 : { color : 'red' } }));
 
     document.querySelector('button').addEventListener('click', function () {
-      Cassis.style.reset();
+      Cassis.style.add(new Reset());
     }, false);
   });
 </script>

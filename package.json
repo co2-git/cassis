@@ -1,13 +1,14 @@
 {
   "name": "cascade",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "main": "dist/lib/cassis.js",
   "scripts": {
     "test": "node dist/test",
     "build": "rm -rf dist && node_modules/.bin/babel app --modules common --stage 0 --optional runtime --out-dir dist;",
     "watch": "rm -rf dist && node_modules/.bin/babel app --watch --modules common --stage 0 --out-dir dist",
-    "postinstall": "npm run build"
+    "postinstall": "npm run build",
+    "browser" : "node_modules/.bin/browserify dist/browser.js -o bundle.js"
   },
   "author": "",
   "license": "ISC",

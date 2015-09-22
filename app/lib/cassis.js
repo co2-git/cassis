@@ -1,6 +1,7 @@
 'use strict';
 
 import $package from '../../package.json';
+import style from './style';
 
 class Cassis {
 
@@ -47,5 +48,7 @@ class Rule {
     return source;
   }
 }
+
+Cassis.style = style;
 
 export default Cassis;

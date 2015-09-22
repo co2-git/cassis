@@ -38,7 +38,8 @@ For dev purposes, the `Style` class allows live styling into a dynamic `<style/>
 
 ```js
 import Cassis from 'cassis';
-import style from 'cassis/dist/lib/style';
+
+const { style } = Cassis;
 
 const body = new Cassis({ body : { color : '#888' } });
 
@@ -52,7 +53,12 @@ style.add(body);
 You can call the Eric Meyer Reset 2.0 which ships by default with Cassis:
 
 ```js
-import style from 'cassis/dist/lib/style';
+import Cassis from 'cassis';
+import Reset from 'cassis/dist/lib/reset';
 
-style.reset();
+style.add(new Reset());
 ```
+
+# Demo
+
+You can find a demo of Cassis in the file index.html. Just open it with your favorite browser.
