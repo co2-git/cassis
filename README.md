@@ -151,7 +151,7 @@ On a side note, we discourage you to use too deep nested rules. Remember that CS
 
 # Flag rules
 
-You can use `&` in rules to attach it to parent rules such as :
+You can use `&` in rules to attach it to rules such as :
 
 ```js
 import Cassis from 'cassis';
@@ -169,6 +169,29 @@ console.log(css.render());
 /*
 p.foo {
   color: red;
+}
+*/
+```
+
+# Properties with the same name
+
+Since in JavaScript object cannot have properties with the same name but CSS can, this is how to do it:
+
+```js
+import Cassis from 'cassis';
+
+const css = new Cassis({
+  '.row' : {
+    'display': ['-webkit-flex', 'flex']
+  }
+});
+
+console.log(css.render());
+
+/*
+.row {
+  display: -webkit-flex;
+  display: flex;
 }
 */
 ```

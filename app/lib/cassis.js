@@ -56,7 +56,10 @@ class Declaration {
     this.declarations = {};
 
     for ( let declaration in declarations ) {
-      if ( typeof declarations[declaration] === 'string' || typeof declarations[declaration] === 'number' ) {
+      if (
+        typeof declarations[declaration] === 'string' ||
+        typeof declarations[declaration] === 'number' ||
+        Array.isArray(declarations[declaration])) {
         this.declarations[declaration] = declarations[declaration];
       }
       else if ( declarations[declaration] instanceof Declaration ) {
@@ -82,6 +85,14 @@ class Declaration {
       source += `    ${property}: ${value};
 `;
     }
+
+    else if ( Array.isArray(value) ) {
+      value.forEach(value => {
+        source += `    ${property}: ${value};
+`;
+      });
+    }
+
     else {
       source += `}
 `;
@@ -104,34 +115,3 @@ Cassis.style = style;
 Cassis.Declaration = Declaration;
 
 export default Cassis;
-
-const border = new Declaration({ 'border' : '1px solid black', margin : '10px' });
-
-const css = new Cassis({
-  'body' : {
-    'color' : 'red'
-  },
-
-  'h1' : { border },
-
-  'p' : {
-    '.foo' : {
-      color : 'red'
-    },
-    '.bar' : {
-      color : 'blue'
-    },
-    '&.barz, &.yellow' : {
-      color : 'yellow'
-    },
-    '.dog': {
-      '.cat' : {
-        color : 'red'
-      }
-    }
-  }
-});
-
-console.log(require('util').inspect(css, { depth: null }));
-
-console.log(css.render());
