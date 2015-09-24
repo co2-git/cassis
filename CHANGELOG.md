@@ -6,3 +6,7 @@
 # 0.0.3
 
 - `Declaration` is now a class and can be used as a mixin
+
+# 0.0.4
+
+- Nested rules

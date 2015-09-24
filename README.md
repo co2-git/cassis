@@ -115,3 +115,60 @@ p {
 }
 */
 ```
+
+# Nested rules
+
+You can have nested rules such as:
+
+```js
+import Cassis from 'cassis';
+
+const css = new Cassis({
+  'p' : {
+    '.foo' : {
+      color : 'red'
+    },
+    '.bar' : {
+      color : 'blue'
+    }
+  }
+});
+
+console.log(css.render());
+
+/*
+p .foo {
+  color: red;
+}
+
+p .bar {
+  color: blue;
+}
+*/
+```
+
+On a side note, we discourage you to use too deep nested rules. Remember that CSS read from right to left (children to parents) and deep nested selectors are slow to be processed.
+
+# Flag rules
+
+You can use `&` in rules to attach it to parent rules such as :
+
+```js
+import Cassis from 'cassis';
+
+const css = new Cassis({
+  'p' : {
+    '&.foo' : {
+      color : 'red'
+    }
+  }
+});
+
+console.log(css.render());
+
+/*
+p.foo {
+  color: red;
+}
+*/
+```

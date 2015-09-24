@@ -108,6 +108,9 @@ var Declaration = (function () {
           source += '    ' + declaration + ': ' + this.declarations[declaration] + ';\n';
         } else if (this.declarations[declaration] instanceof Declaration) {
           source += this.declarations[declaration].render();
+        } else if (typeof this.declarations[declaration] === 'object') {
+          var nested = new Declaration(this.declarations[declaration]);
+          console.log({ nested: nested });
         }
       }
 
@@ -122,6 +125,19 @@ Cassis.style = _style2['default'];
 Cassis.Declaration = Declaration;
 
 exports['default'] = Cassis;
+
+var css = new Cassis({
+  'p': {
+    '.foo': {
+      color: 'red'
+    },
+    '.bar': {
+      color: 'blue'
+    }
+  }
+});
+
+console.log(css.render());
 module.exports = exports['default'];
 },{"../../package.json":5,"./style":4}],3:[function(require,module,exports){
 'use strict';
@@ -301,7 +317,7 @@ module.exports = exports['default'];
 },{"../../package.json":5,"./cassis":2,"_process":7,"events":6}],5:[function(require,module,exports){
 module.exports={
   "name": "cascade",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "",
   "main": "dist/lib/cassis.js",
   "scripts": {
