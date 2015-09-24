@@ -20,8 +20,9 @@ const css = new Cassis({
 });
 
 console.log(css.render());
+```
 
-/*
+```css
 body {
   color: #888;
 }
@@ -29,7 +30,6 @@ p {
   margin: 10px;
   padding: 0;
 }
-*/
 ```
 
 # Style
@@ -79,8 +79,9 @@ css.addRule({
 });
 
 console.log(css.render());
+```
 
-/*
+```css
 body {
   color: #888;
 }
@@ -88,7 +89,6 @@ p {
   margin: 10px;
   padding: 0;
 }
-*/
 ```
 
 # Declarations mixins
@@ -105,15 +105,15 @@ const border = new Declaration({ 'border' : '1px solid black' });
 const css = new Cassis({ h1 : { border }, p : { border } });
 
 console.log(css.render());
+```
 
-/*
+```css
 h1 {
   border: 1px solid black;
 }
 p {
   border: 1px solid black;
 }
-*/
 ```
 
 # Nested rules
@@ -135,8 +135,9 @@ const css = new Cassis({
 });
 
 console.log(css.render());
+```
 
-/*
+```css
 p .foo {
   color: red;
 }
@@ -144,7 +145,6 @@ p .foo {
 p .bar {
   color: blue;
 }
-*/
 ```
 
 On a side note, we discourage you to use too deep nested rules. Remember that CSS read from right to left (children to parents) and deep nested selectors are slow to be processed.
@@ -165,12 +165,12 @@ const css = new Cassis({
 });
 
 console.log(css.render());
+```
 
-/*
+```css
 p.foo {
   color: red;
 }
-*/
 ```
 
 # Properties with the same name
@@ -187,11 +187,46 @@ const css = new Cassis({
 });
 
 console.log(css.render());
+```
 
-/*
+```css
 .row {
   display: -webkit-flex;
   display: flex;
 }
-*/
+```
+
+# Util
+
+## Placeholder
+
+```js
+import Cassis from 'cassis';
+
+const css = new Cassis({
+  'input' : {
+    'color' : 'red',
+    'placeholder' : Cassis.Util.placeholder('input', { color : 'orange' })
+  }
+});
+
+console.log(css.render());
+```
+
+```css
+input {
+  color: red;
+}
+input::-webkit-input-placeholder {
+   color: orange;
+}
+input:-moz-placeholder {
+   color: orange;
+}
+input::-moz-placeholder {
+   color: orange;
+}
+input:-ms-input-placeholder {
+   color: orange;
+}
 ```

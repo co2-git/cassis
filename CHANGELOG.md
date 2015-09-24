@@ -1,3 +1,7 @@
+# 0.0.6
+
+- Util class with placeholder function
+
 # 0.0.5
 
 - Several properties with the same name
