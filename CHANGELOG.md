@@ -1,3 +1,7 @@
+# 0.0.7
+
+- style's method has()
+
 # 0.0.6
 
 - Util class with placeholder function

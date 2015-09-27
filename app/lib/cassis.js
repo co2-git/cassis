@@ -117,13 +117,3 @@ Cassis.Declaration = Declaration;
 Cassis.Util = Util;
 
 export default Cassis;
-
-const css = new Cassis({
-  'input' : {
-    'color' : 'red',
-    'placeholder' : Cassis.Util.placeholder('input', { color : 'orange' })
-  }
-});
-
-console.log(css.render());
-console.log(Cassis.Util.placeholder('&&', { color : 'orange' }))

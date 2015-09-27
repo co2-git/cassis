@@ -46,6 +46,10 @@ const body = new Cassis({ body : { color : '#888' } });
 // Add rule to style
 
 style.add(body);
+
+// check if style has selector
+
+style.has('body'); // true
 ```
 
 # Reset

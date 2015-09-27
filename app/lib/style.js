@@ -18,20 +18,6 @@ class Styles extends EventEmitter {
     this.on('changed', () => this.write());
   }
 
-  appendClass (cls) {
-    console.log('append class', cls.name);
-
-    if ( this.classes.indexOf(cls.name) > -1 ) {
-      console.log('class already here', cls.name);
-      return;
-    }
-
-    this.classes.push(cls.name);
-
-    this.rules.push(new cls());
-    this.emit('changed');
-  }
-
   add (rules) {
     if ( rules instanceof Cassis ) {
       rules = rules.rules;
@@ -42,6 +28,22 @@ class Styles extends EventEmitter {
     }
 
     this.emit('changed');
+  }
+
+  has (selector) {
+    let has = false;
+
+    for ( let rule in this.rules ) {
+      let selectors = this.rules[rule].selector
+        .split(',')
+        .map(selector => selector.trim());
+
+      if ( selectors.indexOf(selector) > -1 ) {
+        has = true;
+      }
+    }
+
+    return has;
   }
 
   write () {

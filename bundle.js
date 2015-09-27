@@ -34,6 +34,10 @@ var _style = require('./style');
 
 var _style2 = _interopRequireDefault(_style);
 
+var _util = require('./util');
+
+var _util2 = _interopRequireDefault(_util);
+
 var Cassis = (function () {
   function Cassis() {
     var rules = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
@@ -72,17 +76,22 @@ var Rule = (function () {
     _classCallCheck(this, Rule);
 
     this.selector = selector;
-    this.declarations = new Declaration(declarations);
+    this.declarations = new Declaration(declarations, this.selector);
   }
 
   _createClass(Rule, [{
     key: 'render',
     value: function render() {
+
       var source = this.selector + ' {\n';
 
-      source += this.declarations.render();
+      for (var declaration in this.declarations.declarations) {
+        source += Declaration.render(declaration, this.declarations.declarations[declaration]);
+      }
 
       source += '}';
+
+      source = source.replace(/.+\{\n\}/g, '');
 
       return source;
     }
@@ -93,25 +102,52 @@ var Rule = (function () {
 
 var Declaration = (function () {
   function Declaration(declarations) {
+    var ns = arguments.length <= 1 || arguments[1] === undefined ? '' : arguments[1];
+
     _classCallCheck(this, Declaration);
 
-    this.declarations = declarations;
+    this.declarations = {};
+
+    for (var declaration in declarations) {
+      if (typeof declarations[declaration] === 'string' || typeof declarations[declaration] === 'number' || Array.isArray(declarations[declaration])) {
+        this.declarations[declaration] = declarations[declaration];
+      } else if (declarations[declaration] instanceof Declaration) {
+        for (var _declaration in declarations[declaration].declarations) {
+          this.declarations[_declaration] = declarations[declaration].declarations[_declaration];
+        }
+      } else if (typeof declarations[declaration] === 'object') {
+        var selector = declaration.split(',').map(function (selector) {
+          return selector.trim();
+        }).map(function (selector) {
+          return (ns + ' ' + selector).replace(/ \&/g, '');
+        }).join(', ');
+
+        this.declarations[selector] = new Rule(selector, declarations[declaration]);
+      }
+    }
   }
 
-  _createClass(Declaration, [{
+  _createClass(Declaration, null, [{
     key: 'render',
-    value: function render() {
+    value: function render(property, value) {
       var source = '';
 
-      for (var declaration in this.declarations) {
-        if (typeof this.declarations[declaration] === 'string' || typeof this.declarations[declaration] === 'number') {
-          source += '    ' + declaration + ': ' + this.declarations[declaration] + ';\n';
-        } else if (this.declarations[declaration] instanceof Declaration) {
-          source += this.declarations[declaration].render();
-        } else if (typeof this.declarations[declaration] === 'object') {
-          var nested = new Declaration(this.declarations[declaration]);
-          console.log({ nested: nested });
+      if (typeof value === 'string' || typeof value === 'number') {
+        source += '    ' + property + ': ' + value + ';\n';
+      } else if (Array.isArray(value)) {
+        value.forEach(function (value) {
+          source += '    ' + property + ': ' + value + ';\n';
+        });
+      } else {
+        source += '}\n';
+
+        source += value.selector + ' {\n';
+
+        for (var _declaration in value.declarations.declarations) {
+          source += this.render(_declaration, value.declarations.declarations[_declaration]);
         }
+
+        // source += `}`;
       }
 
       return source;
@@ -123,23 +159,11 @@ var Declaration = (function () {
 
 Cassis.style = _style2['default'];
 Cassis.Declaration = Declaration;
+Cassis.Util = _util2['default'];
 
 exports['default'] = Cassis;
-
-var css = new Cassis({
-  'p': {
-    '.foo': {
-      color: 'red'
-    },
-    '.bar': {
-      color: 'blue'
-    }
-  }
-});
-
-console.log(css.render());
 module.exports = exports['default'];
-},{"../../package.json":5,"./style":4}],3:[function(require,module,exports){
+},{"../../package.json":6,"./style":4,"./util":5}],3:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -258,21 +282,6 @@ var Styles = (function (_EventEmitter) {
   }
 
   _createClass(Styles, [{
-    key: 'appendClass',
-    value: function appendClass(cls) {
-      console.log('append class', cls.name);
-
-      if (this.classes.indexOf(cls.name) > -1) {
-        console.log('class already here', cls.name);
-        return;
-      }
-
-      this.classes.push(cls.name);
-
-      this.rules.push(new cls());
-      this.emit('changed');
-    }
-  }, {
     key: 'add',
     value: function add(rules) {
       if (rules instanceof _cassis2['default']) {
@@ -284,6 +293,23 @@ var Styles = (function (_EventEmitter) {
       }
 
       this.emit('changed');
+    }
+  }, {
+    key: 'has',
+    value: function has(selector) {
+      var has = false;
+
+      for (var rule in this.rules) {
+        var selectors = this.rules[rule].selector.split(',').map(function (selector) {
+          return selector.trim();
+        });
+
+        if (selectors.indexOf(selector) > -1) {
+          has = true;
+        }
+      }
+
+      return has;
     }
   }, {
     key: 'write',
@@ -314,10 +340,54 @@ var Styles = (function (_EventEmitter) {
 exports['default'] = new Styles();
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"../../package.json":5,"./cassis":2,"_process":7,"events":6}],5:[function(require,module,exports){
+},{"../../package.json":6,"./cassis":2,"_process":8,"events":7}],5:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+var _cassis = require('./cassis');
+
+var _cassis2 = _interopRequireDefault(_cassis);
+
+var Util = (function () {
+  function Util() {
+    _classCallCheck(this, Util);
+  }
+
+  _createClass(Util, null, [{
+    key: 'placeholder',
+    value: function placeholder(selector, declarations) {
+      var placeholders = ['::-webkit-input-placeholder', ':-moz-placeholder', '::-moz-placeholder', ':-ms-input-placeholder'];
+
+      var rules = {};
+
+      placeholders.forEach(function (placeholder) {
+        rules['' + selector + placeholder] = declarations;
+      });
+
+      var Declaration = _cassis2['default'].Declaration;
+
+      return new Declaration(rules);
+    }
+  }]);
+
+  return Util;
+})();
+
+exports['default'] = Util;
+module.exports = exports['default'];
+},{"./cassis":2}],6:[function(require,module,exports){
 module.exports={
   "name": "cascade",
-  "version": "0.0.4",
+  "version": "0.0.7",
   "description": "",
   "main": "dist/lib/cassis.js",
   "scripts": {
@@ -340,7 +410,7 @@ module.exports={
   }
 }
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -643,7 +713,7 @@ function isUndefined(arg) {
   return arg === void 0;
 }
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -676,9 +746,7 @@ function drainQueue() {
         currentQueue = queue;
         queue = [];
         while (++queueIndex < len) {
-            if (currentQueue) {
-                currentQueue[queueIndex].run();
-            }
+            currentQueue[queueIndex].run();
         }
         queueIndex = -1;
         len = queue.length;
@@ -730,6 +798,7 @@ process.binding = function (name) {
     throw new Error('process.binding is not supported');
 };
 
+// TODO(shtylman)
 process.cwd = function () { return '/' };
 process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
