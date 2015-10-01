@@ -11,8 +11,14 @@ class Util {
 
     let rules = {};
 
+    let selectors = selector.split(',').map(selector => selector.trim());
+
     placeholders.forEach(placeholder => {
-      rules[`${selector}${placeholder}`] = declarations;
+      let selectorsWithPlaceholder = selectors
+        .map(selector => `${selector}${placeholder}`)
+        .join(', ');
+
+      rules[selectorsWithPlaceholder] = declarations;
     });
 
     const { Declaration } = Cassis;

@@ -1,3 +1,7 @@
+# 0.0.8
+
+- placeholder support for multi selectors
+
 # 0.0.7
 
 - style's method has()
