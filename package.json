@@ -1,20 +1,21 @@
 {
   "name": "cassis",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "CSS generator in JavaScript",
   "main": "dist/lib/cassis.js",
   "scripts": {
     "test": "node dist/test",
-    "build": "rm -rf dist && node_modules/.bin/babel app --modules common --stage 0 --optional runtime --out-dir dist;",
-    "watch": "rm -rf dist && node_modules/.bin/babel app --watch --modules common --stage 0 --out-dir dist",
+    "build": "rm -rf dist && babel app --modules common --stage 0 --optional runtime --out-dir dist;",
+    "watch": "rm -rf dist && babel app --watch --modules common --stage 0 --out-dir dist",
     "postinstall": "npm run build",
-    "browser" : "node_modules/.bin/browserify dist/browser.js -o bundle.js"
+    "browser": "node_modules/.bin/browserify dist/browser.js -o bundle.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "babel": "^5.8.21",
     "babel-runtime": "^5.8.5",
+    "browserify": "^11.2.0",
     "css": "^2.2.1"
   },
   "devDependencies": {
