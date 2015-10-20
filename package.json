@@ -1,7 +1,7 @@
 {
   "name": "cascade",
-  "version": "0.0.8",
-  "description": "",
+  "version": "0.0.9",
+  "description": "CSS generator in JavaScript",
   "main": "dist/lib/cassis.js",
   "scripts": {
     "test": "node dist/test",
