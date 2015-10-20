@@ -1,6 +1,6 @@
 {
   "name": "cascade",
-  "version": "0.0.9",
+  "version": "0.0.8",
   "description": "CSS generator in JavaScript",
   "main": "dist/lib/cassis.js",
   "scripts": {
