@@ -1,5 +1,5 @@
 {
-  "name": "cascade",
+  "name": "cassis",
   "version": "0.0.8",
   "description": "CSS generator in JavaScript",
   "main": "dist/lib/cassis.js",
