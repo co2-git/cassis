@@ -57,6 +57,19 @@ class Rule {
   toString () {
     if ( this.media instanceof MediaQuery ) {
       let string = '@media ';
+
+      const modes = [];
+
+      if ( this.media.screen ) {
+        modes.push('screen');
+      }
+
+      string += modes.join(' and ');
+
+      if ( modes.length ) {
+        string += ' and ';
+      }
+
       const conditions = [];
 
       if ( ( 'maxDeviceWidth' in this.media ) ) {

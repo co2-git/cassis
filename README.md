@@ -15,7 +15,9 @@ npm install cassis
 import { Stylesheet, MediaQuery } from 'cassis';
 
 new Stylesheet('html { font-size: 100% }')
-  .add('body { font-size : 32px }', new MediaQuery({ maxDeviceWidth : 600 }));
+  .add('body { font-size : 32px }',
+    new MediaQuery({ maxDeviceWidth : 600, screen : true })
+  );
 ```
 
 ```css

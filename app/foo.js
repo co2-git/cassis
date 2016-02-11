@@ -7,7 +7,7 @@ import { Stylesheet, MediaQuery } from '.';
 
 const css = new Stylesheet('html { font-size: 100% }')
   .add('body { font-size : 16px }')
-  .add('body { font-size : 32px }', new MediaQuery({ maxDeviceWidth : 600 }));
+  .add('body { font-size : 32px }', new MediaQuery({ maxDeviceWidth : 600, screen : true }));
 
 console.log(css.toString());
 console.log();
