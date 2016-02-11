@@ -1,8 +1,6 @@
 'use strict';
 
-import Rule from './lib/rule';
-import Stylesheet from './lib/stylesheet';
-import MediaQuery from './lib/media-query';
+import { Stylesheet, MediaQuery } from '.';
 
 // const rule = new Rule('body { font-size : 32px }')
 //   .mediaQuery({ maxDeviceWidth : 600 });
