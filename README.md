@@ -6,7 +6,7 @@ CSS in ES6
 # Install
 
 ```bash
-npm install -g cassis
+npm install cassis
 ```
 
 # Usage
