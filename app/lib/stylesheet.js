@@ -1,8 +1,8 @@
 'use strict';
 
-import css from 'css';
-import Rule from './rule';
-import Declaration from './declaration';
+import css                  from 'css';
+import Rule                 from './rule';
+import Declaration          from './declaration';
 
 class Stylesheet {
   rules = [];
@@ -32,6 +32,12 @@ class Stylesheet {
   add (...args) {
     this.rules.push(new Rule(...args));
     return this;
+  }
+
+  find (selector) {
+    return this.rules.filter(rule => {
+      console.log(rule);
+    });
   }
 }
 

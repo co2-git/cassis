@@ -11,13 +11,15 @@ npm install cassis
 
 # Usage
 
-```js
-import { Stylesheet, MediaQuery } from 'cassis';
+## Create from object
 
-new Stylesheet('html { font-size: 100% }')
-  .add('body { font-size : 32px }',
-    new MediaQuery({ maxDeviceWidth : 600, screen : true })
-  );
+```js
+import { Stylesheet } from 'cassis';
+
+const css = new Stylesheet();
+
+
+console.log(css.toString());
 ```
 
 ```css
