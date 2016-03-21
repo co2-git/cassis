@@ -7,7 +7,6 @@
     "test": "redtea dist/test",
     "babel": "babel --out-dir dist app",
     "babel-watch": "babel --watch --out-dir dist app",
-    "postinstall": "npm run babel",
     "browser": "node_modules/.bin/browserify dist/browser.js -o bundle.js"
   },
   "author": "",
